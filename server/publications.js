@@ -6,14 +6,18 @@ Meteor.publish('messages', function() {
   return Messages.find();
 });
 
-Meteor.publish('userData', function() {
-  var currentUser = this.userId;
-  if (currentUser) {
-    return Meteor.users.find({_id: currentUser}, {
+Meteor.publish('userMessages', function(userId, limit) {
+  return Messages.find({userId: userId}, {skip: Messages.find({userId: userId}).count() - limit});
+});
+
+Meteor.publish('userData', function(userId) {
+  if (userId) {
+    return Meteor.users.find({_id: userId}, {
       fields: {
         "profile": 1,
         "emails.address[0]": 1,
-        "subscription": 1
+        "subscription": 1,
+        "role": 1
       }
     });
   } else {

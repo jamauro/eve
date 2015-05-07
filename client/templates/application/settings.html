@@ -1,0 +1,13 @@
+<template name="settings">
+  <p>{{name}}</p>
+  <p>Your phone: {{formatPhone phone}}</p>
+  {{#if isSubscribed}}
+    {{#if hasCanceled}}
+      <p>Status: Subscription will end on {{formatTime paymentDue}}</p>
+    {{else}}
+      <p>Status: <span class="subscribed">Subscribed</span></p>
+      <p class="muted">Next payment: {{formatTime paymentDue}}</p>
+      <a class="cancel-subscription">Cancel subscription</a>
+    {{/if}}
+  {{/if}}
+</template>

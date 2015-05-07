@@ -1,4 +1,4 @@
-Meteor.methods({
+/* Meteor.methods({
   sendSMS: function(message) {
     twilio = Twilio(Meteor.settings.public.twilio.accountSID, Meteor.settings.public.twilio.authToken);
     twilio.sendSms({
@@ -17,9 +17,20 @@ Meteor.methods({
       }
     });
   }
+}); */
+
+SyncedCron.config({
+  utc: true
 });
 
 FutureTasks = new Meteor.Collection('future_tasks');
+
+// array of subscribers
+// this should be reactive, right?
+var subscribers = Meteor.users.find({'subscription.status': 'active'}).fetch();
+// var subscribersProfiles = _.pluck(subscribers, 'profile');
+// array of subscribers' phone numbers
+// var subscribersPhoneNumbers = _.pluck(subscribersProfiles, 'phone');
 
 var testList = [
   {
@@ -38,44 +49,53 @@ var testList = [
   }
 ];
 
-function sendMessage(details) {
-  twilio = Twilio(Meteor.settings.public.twilio.accountSID, Meteor.settings.public.twilio.authToken);
-  _.each(testList, function(subscriber) {
-      var messageName = details.name;
-      var name = subscriber.profile.name;
-      var firstName = name.substr(0,name.indexOf(' '));
-      var body = message(messageName, firstName);
-      var message = {
-        to: subscriber.profile.phone,
-        from: '+15128656383',
-        body: body
-      };
-      twilio.sendSms({
-        to: message.to,
-        from: message.from,
-        body: message.body
-      }, function(err, response) {
-        if (!err) {
-          console.log(response.to);
-          console.log(response.body);
+Meteor.methods({
+  sendMessage: function(details) {
+    twilio = Twilio(Meteor.settings.public.twilio.accountSID, Meteor.settings.public.twilio.authToken);
+    _.each(details.to, function(subscriber) {
+        // for mass messages
+        if (details.name) {
+          var messageName = details.name;
+          var name = subscriber.profile.name;
+          var firstName = name.substr(0,name.indexOf(' '));
+          var body = createBody(messageName, firstName);
+        } else {
+          // message to single person
+          var body = details.body;
+        }
+        var message = {
+          to: subscriber.profile.phone,
+          from: '+15128656383',
+          body: body
+        };
+        var sendSmsSync = Meteor.wrapAsync(twilio.sms.messages.post, twilio.messages);
+        try {
+          var result = sendSmsSync({
+            to: message.to,
+            from: message.from,
+            body: message.body
+          });
+          console.log(result);
           Meteor.call('messageInsert', message, function(err, res) {
             if (err) {
               console.log(err);
             }
           });
-        } else {
+        }
+        catch (err) {
           console.log(err);
         }
-      });
-    }
-  )
-}
+    });
+  }
+});
 
 
-function message(messageName, personName) {
+
+function createBody(messageName, personName) {
+  console.log(messageName, personName);
   switch (messageName) {
     case 'Morning Message':
-      return "Mornin' " + personName +"! Remember that you're awesome \uD83D\uDE0A";
+      return "Mornin' " + personName +"! Remember that you're awesome";
     case 'Afternoon Message':
       return "Howdy " + personName +"! How are things coming along?";
     case 'Evening Message':
@@ -86,19 +106,19 @@ function message(messageName, personName) {
 var morningMessage = {
   name: 'Morning Message',
   to: subscribers,
-  when: 'at 10:46am'
+  when: 'at 2:00pm'
 }
 
 var afternoonMessage = {
   name: 'Afternoon Message',
   to: subscribers,
-  when: 'at 12:58pm'
+  when: 'at 7:00pm'
 }
 
 var eveningMessage = {
   name: 'Evening Message',
   to: subscribers,
-  when: 'at 1:05pm' //except on Saturday'
+  when: 'at 2:00am' //except on Saturday'
 }
 
 function scheduleMessage(details) {
@@ -111,29 +131,23 @@ function scheduleMessage(details) {
   return true;
 }
 
-function addTask(id, details) {
+addTask = function (id, details) {
   SyncedCron.add({
     name: details.name,
     schedule: function(parser) {
       return parser.text(details.when);
     },
-    job: function() {
+    job: function(intendedAt) {
+      details.intendedAt = intendedAt;
       sendMessage(details);
       FutureTasks.remove(id);
-      SyncedCron.remove(id);
+      // SyncedCron.remove(id);
+      console.log('job should be running at:');
+      console.log(intendedAt);
       return id;
     }
   });
 }
-
-// array of subscribers
-// TODO how do I make this reactive so that when it changes, the array changes?
-var subscribers = Meteor.users.find({'subscription.status': 'active'}).fetch();
-
-// var subscribersProfiles = _.pluck(subscribers, 'profile');
-// array of subscribers' phone numbers
-// var subscribersPhoneNumbers = _.pluck(subscribersProfiles, 'phone');
-
 
 
 scheduleMessage(morningMessage);

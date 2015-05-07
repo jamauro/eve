@@ -5,7 +5,6 @@
       "authToken": "944abe9334aeb09014a8cf95737cea1d"
     },
     "analyticsSettings": {
-      // Add your analytics tracking id's here
       "Google Analytics" : {"trackingId": "UA-60434396-1"},
       "Mixpanel"         : {"token":  "e3338f4f3b4014156e03610b5d614e2b", "people": true}
     }

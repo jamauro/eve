@@ -8,7 +8,7 @@ Template.subscribersList.helpers({
 });
 
 Template.subscribersList.events({
-  "click button": function() {
+/*  "click button": function() {
     var message = {
       to: '(210) 273-6251',
       body: 'Hi!'
@@ -20,5 +20,5 @@ Template.subscribersList.events({
         throwFlash.success("Message sent!");
       }
     });
-  }
+  } */
 });

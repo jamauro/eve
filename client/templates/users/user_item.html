@@ -1,8 +1,13 @@
 <template name="userItem">
   <div class="user">
     <div class="user-content">
-      <h3><a href="{{pathFor 'userPage'}}">{{profile.name}}</a><span>{{formatPhone profile.phone}}</span></h3>
+      <h3><a href="{{pathFor 'userPage'}}">{{profile.name}}</a></h3>
       <p>Member since: {{formatTime createdAt}}</p>
+    </div>
+    <div class="pull-right">
+      {{#if unreadCount}}
+        <span class="badge badge-inverse"><a href="{{pathFor 'userPage'}}">{{unreadCount}}</a></span>
+      {{/if}}
     </div>
   </div>
 </template>

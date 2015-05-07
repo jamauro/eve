@@ -21,7 +21,12 @@ Template.signIn.events({
           return throwFlash.error(error.reason);
         }
         else {
-          Router.go('dashboard');
+          var id = Meteor.userId();
+          if (Meteor.user().role == 'admin') {
+            Router.go('subscribersList');
+          } else {
+            Router.go('userPage', {_id: id});
+          }
         }
       }
     );

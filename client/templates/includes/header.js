@@ -10,5 +10,11 @@ Template.header.events({
         Router.go('home');
       }
     });
-  }
+  },
+  'click .signup':function(e,t) {
+      e.preventDefault();
+      $('html, body').animate({
+          scrollTop: $("#signup").offset().top
+      }, 600);
+   }
 });

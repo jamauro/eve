@@ -10,6 +10,14 @@ Meteor.startup(function () {
     });
     Meteor.users.update({_id: admin}, { $set: {role: 'admin'} });
   }
+  FutureTasks.find().forEach(function(message) {
+    //     console.log(later.parse.text(message.when));
+    if (later.parse.text(message.when) < new Date()) {
+      sendMessage(message);
+    } else {
+      addTask(message._id, message);
+    }
+  });
   SyncedCron.start(); // starts the cron jobs
 });
 

@@ -3,15 +3,6 @@ Meteor.startup(function() {
 });
 
 Template.dashboard.helpers({
-  name: function() {
-    return Meteor.user().profile.name;
-  },
-  phone: function() {
-    return Meteor.user().profile.phone;
-  },
-  isSubscribed: function() {
-    return Meteor.user().subscription.status === 'active';
-  },
   paymentDue: function() {
     return Meteor.user().subscription.ends;
   },
@@ -32,6 +23,7 @@ Template.dashboard.events({
             console.log(err.reason);
           } else {
             analytics.track('Subscribed');
+            Router.go('userPage');
           }
         });
       },
@@ -46,16 +38,5 @@ Template.dashboard.events({
     });
     analytics.track('Clicked Subscribe');
     e.preventDefault();
-  },
-  'click .cancel-subscription': function(e) {
-    var confirmCancel = confirm("Are you sure you want to cancel your subscription? This means your subscription will no longer be active and your account will be disabled on the cancellation date. If you'd like, you can resubscribe later.")
-    if (confirmCancel) {
-      var user = Meteor.user();
-      Meteor.call('cancelUserSubscription', user, function(err, response) {
-        if (err) {
-          throwFlash.error(err.message);
-        }
-      });
-    }
   }
 });

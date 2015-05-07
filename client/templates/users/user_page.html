@@ -1,13 +1,44 @@
 <template name="userPage">
-  {{> userItem}}
-
-  <h4>Messages</h4>
-  <ul class="messages">
-    {{#each messages}}
-      {{> messageItem}}
-    {{/each}}
-    {{#if currentUser }}
-      {{> messageSubmit}}
+  {{#if isAllowedUser}}
+    {{#if isAdmin}}
+      <h3 class="text-center">{{user.profile.name}}</h3>
     {{/if}}
-  </ul>
+    <div class="dialogue">
+      <ul>
+        {{#if nextPath}}
+          <a class="load-more" href="{{nextPath}}">Show earlier messages</a>
+        {{/if}}
+        {{#each messages}}
+          {{> messageItem}}
+        {{/each}}
+      </ul>
+      {{#if isAdmin}}
+        {{> messageSubmit}}
+      {{/if}}
+    </div>
+  {{else}}
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <h2>Howdy, {{firstName}}! Let's get started.</h2>
+      <p>After subscribing, I’ll send you a welcome text and we’ll be on our way to conquering your dreams and having some fun while doing it.</p>
+      <button class="btn btn-primary btn-large" id="subscribe">Subscribe for less than 25¢ a day</button>
+    </div>
+    <div class="faq col-md-12 text-center">
+      <h3>A few frequently asked questions</h3>
+      <p>Have a different question? <a href="mailto:achievewitheve@gmail.com">Email me</a></p>
+    </div>
+    <div class="col-md-12">
+      <div class="col-md-4 faq-details col-md-offset-1">
+        <p>Is eve a real person?</p>
+        <p>Eve is as real as apple pie. She’s got the world’s knowledge at her finger tips and the heart and soul of a trusted friend.</p>
+        <p>Will eve be my friend?</p>
+        <p>You betcha. You can think of eve as a companion to help you keep yourself accountable and have a little fun doing it.</p>
+      </div>
+      <div class="col-md-4 faq-details col-md-offset-2">
+        <p>What else can eve do for me?</p>
+        <p>What, helping you achieve all your goals isn’t enough? Eve is always learning. If you want something, just ask.</p>
+        <p>Can I cancel at anytime?</p>
+        <p>Of course you can, but I’d be really sad if you did.</p>
+      </div>
+    </div>
+  {{/if}}
 </template>

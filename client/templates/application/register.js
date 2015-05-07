@@ -30,6 +30,48 @@ Template.register.helpers({
 
 Template.register.events({
   // e = event, t = template
+  'blur #account-email': function(e, t) {
+    var email = t.find('#account-email').value;
+    var isValid = isValidEmail(email);
+    if(!isValid) {
+      var errors = {
+        email: "Whoops, double check your email"
+      };
+      return Session.set('registerErrors', errors);
+    } else {
+      if (!!Session.get('registerErrors')['email']) {
+        return Session.set('registerErrors')['email'] = '';
+      }
+    }
+  },
+  'blur #account-phone': function(e, t) {
+    var phone = t.find('#account-phone').value;
+    var isValid = t.$("#account-phone").intlTelInput("isValidNumber");
+    if(!isValid) {
+      var errors = {
+        phone: "Whoops, double check your phone"
+      };
+      return Session.set('registerErrors', errors);
+    } else {
+      if (!!Session.get('registerErrors')['phone']) {
+        return Session.set('registerErrors')['phone'] = '';
+      }
+    }
+  },
+  'blur #account-password': function(e, t) {
+    var password = t.find('#account-password').value;
+    var isValid = isValidPassword(password);
+    if(!isValid) {
+      var errors = {
+        password: "Try something longer. Multiple words is best."
+      };
+      return Session.set('registerErrors', errors);
+    } else {
+      if (!!Session.get('registerErrors')['password']) {
+        return Session.set('registerErrors')['password'] = '';
+      }
+    }
+  },
   'submit #register-form': function(e, t) {
     e.preventDefault();
     var intlPhone = t.$("#account-phone").intlTelInput("getNumber");

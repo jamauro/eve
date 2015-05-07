@@ -1,33 +1,45 @@
 <template name="home">
   <div class="col-md-6 col-md-offset-3">
+    <h2 class="text-center">achieve with eve</h2>
+    <p class="text-center">eve’s here to help you get the most important things done</p>
     <div class="home dialogue animated fadeIn">
       <ul>
-        <li class="me animated-dialogue fadeInUp" id="dialogue-line-1"><span>Hello you!</span></li>
-        <li class="me animated-dialogue fadeInUp" id="dialogue-line-2"><span>I'm Eve</span></li>
-        <li class="me animated-dialogue fadeInUp" id="dialogue-line-3"><span>Ready to achieve all your goals?</span></li><br>
-        <li class="you animated-dialogue fadeInUp" id="dialogue-line-4"><span>Sounds good!</span></li><br>
-        <li class="me animated-dialogue fadeInUp" id="dialogue-line-5"><span>&#x1F44D;</span></li>
+        <li class="me animated-dialogue fadeInUp message" id="dialogue-line-1">Hello you!</li>
+        <li class="me animated-dialogue fadeInUp message" id="dialogue-line-2">I'm Eve</li>
+        <li class="me animated-dialogue fadeInUp message" id="dialogue-line-3">Ready to achieve all your goals?</li><br>
+        <li class="you animated-dialogue fadeInUp message" id="dialogue-line-4">Sounds good!</li><br>
+        <li class="me animated-dialogue fadeInUp message" id="dialogue-line-5">&#x1F44D;</li>
       </ul>
     </div>
   </div>
   <div class="row overview col-md-12">
-    <h2 class="text-center">Achieve with Eve</h2>
     <div class="benefits">
       <div class="col-md-4 text-center">
-        <h3>Monitor progress</h3>
-        <p>Eve to the rescue to help you get done the shit you need to do. She'll even bathe your puppies!</p>
+        <div class="icon">{{> prioritizeIcon}}</div>
+        <h3>Prioritize effectively</h3>
+        <p>Ensure your top 3 most important things get done each day by prioritizing with eve</p>
       </div>
       <div class="col-md-4 text-center">
-        <h3>Prioritize</h3>
-        <p>Eve to the rescue to help you get done the shit you need to do. She'll even bathe your puppies!</p>
+        <div class="icon">{{> buildIcon}}</div>
+        <h3>Build habits</h3>
+        <p>Get things done and obtain work-life balance by building habits with eve by your side</p>
       </div>
       <div class="col-md-4 text-center">
-        <h3>Rock & Roll</h3>
-        <p>Eve to the rescue to help you get done the shit you need to do. She'll even bathe your puppies!</p>
+        <div class="icon">{{> dreamIcon}}</div>
+        <h3>Dream big and execute</h3>
+        <p>Track the bigger picture with eve and execute to make your dreams a reality with eve's help</p>
       </div>
     </div>
   </div>
-  <div class="col-md-4 col-md-offset-4">
+  <div class="row col-md-12">
+    <div class="testimonial col-md-6 col-md-offset-3 text-center">
+      <div class="image"></div>
+      <h3>Eve has changed my life. She’s helped me become the person I’ve always dreamed.</h3>
+      <div class="quote-line"></div>
+      <p class="small">Jae L.</p>
+    </div>
+  </div>
+  <div id="signup" class="col-md-4 col-md-offset-4">
     {{> register}}
   </div>
     <!-- {{> login}} -->

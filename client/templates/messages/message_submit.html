@@ -1,11 +1,17 @@
 <template name="messageSubmit">
-  <form name="message" class="form">
-    <div class="form-group {{errorClass 'body'}}">
-      <div class="controls">
-        <textarea name="body" id="body" class="form-control" placeholder="New message" rows="2"></textarea>
-        <button type="submit" id="send" class="btn btn-primary">Send</button>
-        <span class="help-block">{{errorMessage 'body'}}</span>
+  <div class="compose-new col-md-6 col-md-offset-3">
+    <form name="message" class="form">
+      <div class="form-group {{errorClass 'body'}}" id="compose">
+        <div class="controls">
+          <div class="col-md-9">
+            <textarea name="body" id="new-message" class="form-control" placeholder="New message"></textarea>
+            <span class="help-block">{{errorMessage 'body'}}</span>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" id="send" class="btn btn-primary">Send</button>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
