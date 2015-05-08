@@ -373,7 +373,7 @@ li.me {
 li.you {
   text-align: left;
   float: left;
-  background-color: #ccc;
+  background-color: rgba(117,133,143,0.4);
 }
 
 li.date {
@@ -475,6 +475,12 @@ li.date {
 .faq-details p:nth-child(3) {
   margin-top: 48px;
   color: #4A545B;
+}
+
+.badge {
+  background-color: none;
+  border: 2px solid #37E0FF;
+  margin: 13px 0;
 }
 
 footer {
